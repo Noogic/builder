@@ -5,6 +5,7 @@ namespace Noogic\Builder\Test;
 use Noogic\Builder\Builder;
 use Noogic\Builder\Test\Stubs\ActiveState;
 use Noogic\Builder\Test\Stubs\Email;
+use Noogic\Builder\Test\Stubs\InactiveState;
 use PHPUnit\Framework\TestCase;
 
 class BuilderTest extends TestCase
@@ -31,5 +32,15 @@ class BuilderTest extends TestCase
 
         $this->assertInstanceOf(ActiveState::class, $state);
         $this->assertEquals('active', $state->state());
+    }
+
+    /** @test */
+    function it_can_build_an_object_without_constructor()
+    {
+        /** @var InactiveState $state */
+        $state = Builder::instance()->make(InactiveState::class);
+
+        $this->assertInstanceOf(InactiveState::class, $state);
+        $this->assertEquals('inactive', $state->state());
     }
 }
