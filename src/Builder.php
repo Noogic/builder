@@ -14,7 +14,7 @@ class Builder
         return new self;
     }
 
-    public function get(string $class, array $data = null)
+    public function make(string $class, array $data = null)
     {
         $reflectionClass = new ReflectionClass($class);
 
@@ -51,7 +51,7 @@ class Builder
             $reflectionClass = $param->getClass();
 
             $values[$key] = $reflectionClass
-                ? $this->get($reflectionClass->name, Arr::get($data, $key))
+                ? $this->make($reflectionClass->name, Arr::get($data, $key))
                 : Arr::get($data, $key)
             ;
         }
