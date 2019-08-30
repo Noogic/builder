@@ -15,7 +15,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Noogic\\Builder\\Test\\": "test/"
+            "Noogic\\Builder\\Tests\\": "tests/"
         }
     },
     "license": "MIT",

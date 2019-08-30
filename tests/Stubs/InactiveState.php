@@ -1,6 +1,6 @@
 <?php
 
-namespace Noogic\Builder\Test\Stubs;
+namespace Noogic\Builder\Tests\Stubs;
 
 class InactiveState
 {

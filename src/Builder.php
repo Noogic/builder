@@ -14,7 +14,7 @@ class Builder
         return new self;
     }
 
-    public function make(string $class, array $data = null)
+    public function make(string $class, $data = null)
     {
         $reflectionClass = new ReflectionClass($class);
 
@@ -24,10 +24,13 @@ class Builder
 
         $params = $this->getConstructorParams($class);
 
-        $instance = is_array($data)
-            ? $reflectionClass->newInstanceArgs($this->getValues($data, $params))
-            : $reflectionClass->newInstance($data)
-        ;
+        if (is_a($data, $class)) {
+            $instance = $data;
+        } else if (is_array($data)) {
+            $instance = $reflectionClass->newInstanceWithoutConstructor($this->getValues($data, $params));
+        } else {
+            $instance = $reflectionClass->newInstance($data);
+        }
 
         return $instance;
     }

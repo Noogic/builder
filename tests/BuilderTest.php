@@ -1,14 +1,14 @@
 <?php
 
-namespace Noogic\Builder\Test;
+namespace Noogic\Builder\Tests;
 
 use Noogic\Builder\Builder;
-use Noogic\Builder\Test\Stubs\ActiveState;
-use Noogic\Builder\Test\Stubs\Company;
-use Noogic\Builder\Test\Stubs\CompanyName;
-use Noogic\Builder\Test\Stubs\Email;
-use Noogic\Builder\Test\Stubs\InactiveState;
-use Noogic\Builder\Test\Stubs\Worker;
+use Noogic\Builder\Tests\Stubs\ActiveState;
+use Noogic\Builder\Tests\Stubs\Company;
+use Noogic\Builder\Tests\Stubs\CompanyName;
+use Noogic\Builder\Tests\Stubs\Email;
+use Noogic\Builder\Tests\Stubs\InactiveState;
+use Noogic\Builder\Tests\Stubs\Worker;
 use PHPUnit\Framework\TestCase;
 
 class BuilderTest extends TestCase
@@ -48,7 +48,7 @@ class BuilderTest extends TestCase
     }
 
     /** @test */
-    function it_can_build_an_object_with_other_objects_and_scalars_from_array_values()
+    function it_can_build_an_object_asking_other_objects_and_scalars_from_array_values()
     {
         $data = [
             'name' => [
@@ -85,5 +85,22 @@ class BuilderTest extends TestCase
         $this->assertEquals($data['owner']['name'], $company->owner()->name());
         $this->assertInstanceOf(Email::class, $company->owner()->email());
         $this->assertEquals($data['owner']['email']['value'], $company->owner()->email()->value());
+    }
+
+    /** @test */
+    function it_can_build_an_object_passing_its_dependencies_built()
+    {
+        $data = [
+            'name' => 'worker name',
+            'email' => new Email('test.email@test.com'),
+        ];
+
+        /** @var Worker $worker */
+        $worker = Builder::instance()->make(Worker::class, $data);
+
+        $this->assertInstanceOf(Worker::class, $worker);
+        $this->assertInstanceOf(Email::class, $worker->email());
+        $this->assertEquals($data['name'], $worker->name());
+        $this->assertEquals($data['email']->value(), $worker->email()->value());
     }
 }
